@@ -1,13 +1,21 @@
 import { data } from "../../utils/data";
 import "../../style/mainStyle/dashProducts.css";
 import OffCanvas from "./OffCanvas";
+import { useState } from "react";
 export default function DashProducts() {
-  console.log(data);
+  const [closeOffCanva, setCloseOffcanva] = useState(false);
   return (
     <div className="DashProducts">
       <div className="products-header">
         <div className="addProduct">
-          <button className="addProduct_button">+ Бараа нэмэх</button>
+          <button
+            className="addProduct_button"
+            onClick={() => {
+              setCloseOffcanva(true);
+            }}
+          >
+            + Бараа нэмэх
+          </button>
         </div>
         <div className="filter">
           <select name="category" id="category">
@@ -54,7 +62,7 @@ export default function DashProducts() {
           })}
         </tbody>
       </table>
-      <OffCanvas />
+      {closeOffCanva ? <OffCanvas closeOffCanva={setCloseOffcanva} /> : null}
     </div>
   );
 }

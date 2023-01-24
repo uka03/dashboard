@@ -3,8 +3,8 @@ export default function closeIcon() {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 30 30"
-      width="50px"
-      height="50px"
+      width="25px"
+      height="25px"
       fill="#a4a4a4"
     >
       {" "}

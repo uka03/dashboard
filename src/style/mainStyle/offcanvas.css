@@ -29,3 +29,98 @@
   border: none;
   background-color: transparent;
 }
+
+.offcanvas-main {
+  width: 80%;
+  margin: 30px auto;
+}
+.offcanvas-main-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0px 30px;
+}
+.offcanvas-main-inputs label {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+}
+
+.offcanvas-main-inputs input {
+  padding: 10px;
+  box-sizing: border-box;
+  height: 30px;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+.spec-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+}
+.spec-inputs label {
+  display: flex;
+  width: 45%;
+  gap: 10px;
+  flex-direction: column;
+  align-items: stretch;
+}
+.specTitle {
+  padding: 5px;
+  box-sizing: border-box;
+  height: 30px;
+  border: None;
+  border-radius: 5px;
+}
+.specValue {
+  padding: 10px;
+  box-sizing: border-box;
+  height: 30px;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+::placeholder {
+  color: black;
+  font-size: 16px;
+}
+
+.addProductSpec {
+  background-color: #a5a5a5;
+  box-sizing: border-box;
+  display: block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  width: 45%;
+  border-radius: 10px;
+}
+.addProductSpec:hover {
+  background-color: #b4b4b4;
+}
+
+.otherOptoin {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+}
+
+.otherOptoin select {
+  width: 250px;
+  background-color: #003282;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+}
+
+.saveBtn {
+  background-color: #003282;
+  border: none;
+  width: 100%;
+  padding: 10px 20px;
+  display: block;
+  margin-top: 30px;
+  color: white;
+  border-radius: 20px;
+  font-size: 20px;
+}
