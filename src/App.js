@@ -9,9 +9,17 @@ import Moderator from './components/sub-component/Moderator'
 import Settings from './components/sub-component/Settings'
 import DashHeader from './components/Dashheader'
 import DashSide from './components/DashSide';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 
 function App() {
+  const [data, setdata] = useState()
+  useEffect(() => {
+    axios.get("http://localhost:2020/product").then((res) => setdata(res.data))
+  }, [])
+  console.log(data)
+
   return (
     <div className="App">
       <div className="dashboard">
@@ -20,7 +28,7 @@ function App() {
           <DashSide />
           <Routes>
             <Route path="*" element={<ControlPanel />} />
-            <Route path="/dashProducts" element={<DashProducts />} />
+            <Route path="/dashProducts" element={<DashProducts data={data} />} />
             <Route path="/order" element={<Order />} />
             <Route path="/users" element={<Users />} />
             <Route path="/moderator" element={<Moderator />} />

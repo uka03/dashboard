@@ -3,15 +3,16 @@ import CloseIcon from "../../icons/CloseIcon";
 import "../../style/mainStyle/offcanvas.css";
 export default function OffCanvas(prop) {
   const { closeOffCanva } = prop;
-  const [spec, setspec] = useState(<></>);
-  let temp;
+  let temp = [];
+  const [spec, setspec] = useState([]);
   function handleSubmit(e) {
     e.preventDefault();
     let specKey = e.target.specKey.value;
     let specVal = e.target.specvalue.value;
-    setspec(temp);
-    console.log(specKey, specVal);
-    setspec(<SpecLabel key={specKey} val={specVal} />);
+    let specObject = { specKey, specVal };
+
+    setspec([...spec, specObject]);
+    console.log(spec);
   }
 
   return (
@@ -26,7 +27,7 @@ export default function OffCanvas(prop) {
           <div className="offcanvas-main-inputs">
             <label>
               <p> Барааны нэр </p>
-              <input type="text" name="name" />
+              <input type="text" name="name" value="sujgfd" />
             </label>
             <label>
               <p> Барааны үнэ {"(₮)"}</p>
@@ -44,7 +45,20 @@ export default function OffCanvas(prop) {
 
           <p>Үзүүлэлтүүд</p>
           <form className="spec-inputs" onSubmit={handleSubmit}>
-            {spec}
+            {spec.map((newspec) => {
+              console.log(newspec);
+              return (
+                <label>
+                  <p>{newspec.specKey} </p>
+                  <input
+                    type="text"
+                    name={newspec.specKey}
+                    value={newspec.specvalue}
+                    defaultValue={newspec.specvalue}
+                  />
+                </label>
+              );
+            })}
             <label>
               <input
                 name="specKey"
@@ -90,25 +104,5 @@ export default function OffCanvas(prop) {
         </div>
       </div>
     </div>
-  );
-}
-export function SpecLabel(prop) {
-  const { key, val } = prop;
-  inputChangedHandler = (event) => {
-    const val = event.target.value;
-    // May be call for search result
-  };
-
-  return (
-    <label>
-      <p>{key}</p>
-      <input
-        type="text"
-        name="sale"
-        value={val}
-        defaultValue="Search..."
-        onChange={(event) => this.inputChangedHandler(event)}
-      />
-    </label>
   );
 }
