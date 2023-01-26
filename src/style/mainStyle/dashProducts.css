@@ -36,3 +36,31 @@
 td {
   padding: 10px;
 }
+
+.menuBtn {
+  background-color: transparent;
+  border: none;
+  position: relative;
+}
+
+.menuBtn-dropDown {
+  display: none;
+  position: absolute;
+  width: 50px;
+  background-color: white;
+  padding: 20px;
+  z-index: 1;
+  border-radius: 10px;
+}
+.menuBtn:hover .menuBtn-dropDown {
+  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.menuBtn-dropDown input {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid rgb(174, 174, 174);
+}

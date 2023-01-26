@@ -1,31 +1,59 @@
+import axios from "axios";
 import { useState } from "react";
 import CloseIcon from "../../icons/CloseIcon";
 import "../../style/mainStyle/offcanvas.css";
 export default function OffCanvas(prop) {
-  const { closeOffCanva } = prop;
+  const { closeOffCanva, data, setProduct } = prop;
+  console.log(data);
   let temp = [];
   const [spec, setspec] = useState([]);
   const [addSpecKey, setAddSpecKey] = useState();
   const [addSpecVal, setAddSpecVal] = useState();
   function addedSpec(e) {
     e.preventDefault();
-    let specKey = e.target.specKey.value;
-    let specVal = e.target.specvalue.value;
-    let specObject = { specKey, specVal };
+
+    let specObject = { addSpecKey, addSpecVal };
 
     setspec([...spec, specObject]);
-    e.target.specKey.value = "";
+    console.log(spec);
   }
   function handlerSubmit(e) {
-    // e.preventDefault();
+    e.preventDefault();
     console.log(e, "working");
+    let name = e.target.name.value;
+    let price = e.target.price.value;
+    let stock = e.target.stock.value;
+    let sale = e.target.sale.value;
+    let category = e.target.chooseCategory.value;
+    let brand = e.target.chooseBrand.value;
+    let proObject = {
+      name,
+      price,
+      stock,
+      sale,
+      category,
+      brand,
+      spec,
+    };
+    axios
+      .post("http://localhost:2020/product", proObject)
+      .then((res) => console.log(res));
+    console.log(proObject);
+    closeOffCanva(false);
+    setProduct("");
+    location.reload();
   }
 
   return (
     <div className="offcanvas">
       <div className="offcanvas-content">
         <div className="offcanvas-content-header">
-          <button onClick={() => closeOffCanva(false)}>
+          <button
+            onClick={() => {
+              closeOffCanva(false);
+              setProduct("");
+            }}
+          >
             <CloseIcon />
           </button>
         </div>
@@ -40,43 +68,64 @@ export default function OffCanvas(prop) {
               <input
                 type="text"
                 name="name"
-                defaultValue=""
-                form="addedProduct"
+                defaultValue={data ? data.name : ""}
               />
             </label>
             <label>
               <p> Барааны үнэ {"(₮)"}</p>
-              <input type="number" name="price" form="addedProduct" />
+              <input
+                type="number"
+                name="price"
+                defaultValue={data ? data.price : ""}
+              />
             </label>
             <label>
               <p>Үлдэгдэл</p>
-              <input type="number" name="stock" form="addedProduct" />
+              <input
+                type="number"
+                name="stock"
+                defaultValue={data ? data.stock : ""}
+              />
             </label>
             <label>
               <p>Хямдрал {"(%-иар)"}</p>
-              <input type="number" name="sale" form="addedProduct" />
+              <input
+                type="number"
+                name="sale"
+                defaultValue={data ? data.stock : ""}
+              />
             </label>
           </div>
-
           <p>Үзүүлэлтүүд</p>
-          <form className="spec-inputs" onSubmit={addedSpec} id="addedSpec">
-            {spec.map((newspec, i) => {
-              console.log(newspec.specVal);
-              return (
-                <label key={i}>
-                  <p>{newspec.specKey} </p>
-                  <input
-                    type="text"
-                    form="addedSpec"
-                    name={newspec.specKey}
-                    defaultValue={newspec.specVal}
-                  />
-                </label>
-              );
-            })}
+          <div className="spec-inputs" id="addedSpec">
+            {data
+              ? data.spec.map((spec, i) => {
+                  return (
+                    <label key={i}>
+                      <p>{Object.keys(spec)} </p>
+                      <input
+                        type="text"
+                        name={Object.values(spec)}
+                        defaultValue={Object.values(spec)}
+                      />
+                    </label>
+                  );
+                })
+              : spec.map((newspec, i) => {
+                  console.log(newspec.addSpecKey);
+                  return (
+                    <label key={i}>
+                      <p>{newspec.addSpecKey} </p>
+                      <input
+                        type="text"
+                        name={newspec.specKey}
+                        defaultValue={newspec.addSpecVal}
+                      />
+                    </label>
+                  );
+                })}
             <label>
               <input
-                form="addedSpec"
                 name="specKey"
                 type="text"
                 placeholder="Тайлбар"
@@ -86,7 +135,6 @@ export default function OffCanvas(prop) {
                 }}
               />
               <input
-                form="addedSpec"
                 name="specvalue"
                 type="text"
                 placeholder="үзүүлэлт"
@@ -96,15 +144,17 @@ export default function OffCanvas(prop) {
                 }}
               />
             </label>
-            <button className="addProductSpec" type="submit" form="addedSpec">
-              + Үзүүлэлт нэмэх
-            </button>
-          </form>
-
+            <input
+              className="addProductSpec"
+              type="button"
+              onClick={addedSpec}
+              value="  + Үзүүлэлт нэмэх"
+            />
+          </div>
           <div className="otherOptoin">
             <label>
               <p>Категори сонгох</p>
-              <select name="category" id="selectCategory" form="addedProduct">
+              <select name="chooseCategory" id="selectCategory">
                 <option value="laptop">Laptop</option>
                 <option value="tablet">Tablet</option>
                 <option value="telescop">telescop</option>
@@ -114,7 +164,7 @@ export default function OffCanvas(prop) {
             </label>
             <label>
               <p>Брэнд сонгох</p>
-              <select name="category" id="selectCategory" form="addedProduct">
+              <select name="chooseBrand" id="selectCategory">
                 <option value="laptop">samsung</option>
                 <option value="tablet">apple</option>
                 <option value="telescop">dell</option>
@@ -123,7 +173,7 @@ export default function OffCanvas(prop) {
               </select>
             </label>
           </div>
-          <button className="saveBtn" type="submit" form="addedProduct">
+          <button className="saveBtn" type="submit">
             Хадгалах
           </button>
         </form>

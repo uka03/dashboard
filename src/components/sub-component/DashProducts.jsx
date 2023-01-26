@@ -1,10 +1,21 @@
 import "../../style/mainStyle/dashProducts.css";
 import OffCanvas from "./OffCanvas";
 import { useState } from "react";
+import MenuIcon from "../../icons/Menuicon";
+import axios from "axios";
 export default function DashProducts(prop) {
   const { data } = prop;
   const [closeOffCanva, setCloseOffcanva] = useState(false);
-
+  const [product, setProduct] = useState();
+  function deleteProduct(index) {
+    axios
+      .delete(`http://localhost:2020/product/${index}`)
+      .then((res) => console.log(res));
+    location.reload();
+  }
+  function editHandler() {
+    setCloseOffcanva(true);
+  }
   return (
     <>
       {data && (
@@ -58,16 +69,37 @@ export default function DashProducts(prop) {
                     <td>{product.sale}</td>
                     <td>{product.category}</td>
                     <td>
-                      <button>засах</button>
+                      <button className="menuBtn">
+                        <MenuIcon />
+                        <div className="menuBtn-dropDown">
+                          <input
+                            type="button"
+                            value="edit"
+                            onClick={() => {
+                              editHandler(product);
+                              setProduct(product);
+                            }}
+                          />
+                          <input
+                            type="button"
+                            value="delete"
+                            onClick={() => deleteProduct(index)}
+                          />
+                        </div>
+                      </button>
                     </td>
                   </tr>
                 );
               })}
             </tbody>
+            {closeOffCanva ? (
+              <OffCanvas
+                closeOffCanva={setCloseOffcanva}
+                data={product}
+                setProduct={setProduct}
+              />
+            ) : null}
           </table>
-          {closeOffCanva ? (
-            <OffCanvas closeOffCanva={setCloseOffcanva} />
-          ) : null}
         </div>
       )}
     </>
