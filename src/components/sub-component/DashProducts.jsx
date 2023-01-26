@@ -31,8 +31,8 @@ export default function DashProducts(prop) {
               <input type="text" placeholder="search" />
             </div>
           </div>
-          <table>
-            <thead>
+          <table className="table">
+            <thead className="table-head">
               <tr>
                 <th>Зураг</th>
                 <th>Барааны нэр</th>

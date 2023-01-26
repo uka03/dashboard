@@ -6,4 +6,13 @@
 .dashMain {
   display: flex;
   gap: 20px;
+  justify-content: center;
+  width: 100%;
+}
+
+.dashContent {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  padding: 30px 50px;
 }
