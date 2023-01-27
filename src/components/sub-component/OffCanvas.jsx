@@ -5,7 +5,6 @@ import "../../style/mainStyle/offcanvas.css";
 export default function OffCanvas(prop) {
   const { closeOffCanva, data, setProduct } = prop;
   console.log(data);
-  let temp = [];
   const [spec, setspec] = useState([]);
   const [addSpecKey, setAddSpecKey] = useState();
   const [addSpecVal, setAddSpecVal] = useState();
@@ -26,23 +25,37 @@ export default function OffCanvas(prop) {
     let sale = e.target.sale.value;
     let category = e.target.chooseCategory.value;
     let brand = e.target.chooseBrand.value;
+    let image = data.image;
+    let spec = spec;
+    let id = data.id;
     let proObject = {
       name,
+      image,
       price,
       stock,
       sale,
       category,
       brand,
       spec,
+      id,
     };
-    axios
-      .post("http://localhost:2020/product", proObject)
-      .then((res) => console.log(res));
-    console.log(proObject);
+
+    setProduct(undefined);
+    if (data) {
+      axios
+        .put(`http://localhost:2020/product/${data.id}`, proObject)
+        .then((res) => console.log(res));
+      console.log(proObject);
+    } else {
+      axios
+        .post("http://localhost:2020/product", proObject)
+        .then((res) => console.log(res));
+      console.log(proObject);
+    }
     closeOffCanva(false);
-    setProduct("");
-    location.reload();
+    // location.reload();
   }
+  console.log(data);
 
   return (
     <div className="offcanvas">
@@ -51,7 +64,7 @@ export default function OffCanvas(prop) {
           <button
             onClick={() => {
               closeOffCanva(false);
-              setProduct("");
+              setProduct(undefined);
             }}
           >
             <CloseIcon />
@@ -92,7 +105,7 @@ export default function OffCanvas(prop) {
               <input
                 type="number"
                 name="sale"
-                defaultValue={data ? data.stock : ""}
+                defaultValue={data ? data.sale : ""}
               />
             </label>
           </div>
