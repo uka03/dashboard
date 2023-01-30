@@ -1,39 +1,46 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CloseIcon from "../../icons/CloseIcon";
 import "../../style/mainStyle/offcanvas.css";
 
 export default function OffCanvas(prop) {
-  const { closeOffCanva, data, setProduct } = prop;
+  const { closeOffCanva, data, setProduct, fullData, setRefesh } = prop;
   let [spect, setspec] = useState([]);
   const [addSpecKey, setAddSpecKey] = useState();
   const [addSpecVal, setAddSpecVal] = useState();
 
-  let newSpec = [];
+  let tempCategory = [];
+  useEffect(() => {
+    let temp = [];
+    if (data) {
+      data.spec.map((e) => {
+        temp.push(e);
+      });
+    }
+    setspec([...temp]);
+  }, []);
 
-  if (data) {
-    data.spec.map((e) => {
-      newSpec.push(e);
-    });
-  }
   function updateSpec(e) {
     let label = e.target.labels[0].innerText;
     let val = e.target.value;
 
-    newSpec.map((e) => {
+    spect.map((e) => {
       if (Object.keys(e) == label) {
         e[label] = val;
       }
     });
   }
+
   function addedSpec(e) {
     e.preventDefault();
 
     let specObject = {};
     specObject[addSpecKey] = addSpecVal;
+
     setspec([...spect, specObject]);
     console.log(spect);
   }
+
   function handlerSubmit(e) {
     e.preventDefault();
     let name = e.target.name.value;
@@ -42,47 +49,36 @@ export default function OffCanvas(prop) {
     let sale = e.target.sale.value;
     let category = e.target.chooseCategory.value;
     let brand = e.target.chooseBrand.value;
-    let image = data && data.image;
-    let id = data && data.id;
-    let spec = data ? newSpec : spect;
-    let proObject = data
-      ? {
-          name,
-          image,
-          price,
-          stock,
-          sale,
-          category,
-          brand,
-          spec,
-          id,
-        }
-      : {
-          name,
-          price,
-          stock,
-          sale,
-          category,
-          brand,
-          spec,
-        };
+    let image = data ? data.image : null;
+    let id = data ? data.id : null;
+    let spec = spect;
+    let proObject = {
+      name,
+      image,
+      price,
+      stock,
+      sale,
+      category,
+      brand,
+      spec,
+      id,
+    };
+
     console.log(proObject);
     if (data) {
       axios
         .put(`http://localhost:2020/product/${data.id}`, proObject)
-        .then((res) => console.log(res));
+        .then((res) => setRefesh(res));
       console.log(proObject);
     } else {
       axios
         .post("http://localhost:2020/product", proObject)
-        .then((res) => console.log(res));
+        .then((res) => setRefesh(res));
       console.log(proObject);
     }
     closeOffCanva(false);
-    location.reload();
     setProduct(undefined);
   }
-  // console.log(data);
 
   return (
     <div className="offcanvas">
@@ -138,32 +134,19 @@ export default function OffCanvas(prop) {
           </div>
           <p>Үзүүлэлтүүд</p>
           <div className="spec-inputs" id="addedSpec">
-            {data
-              ? data.spec.map((spec, i) => {
-                  return (
-                    <label key={i}>
-                      <p>{Object.keys(spec)} </p>
-                      <input
-                        type="text"
-                        name={Object.values(spec)}
-                        defaultValue={Object.values(spec)}
-                        onChange={updateSpec}
-                      />
-                    </label>
-                  );
-                })
-              : spect.map((newspec, i) => {
-                  return (
-                    <label key={i}>
-                      <p>{Object.keys(newspec)}</p>
-                      <input
-                        type="text"
-                        name={Object.values(newspec)}
-                        defaultValue={Object.values(newspec)}
-                      />
-                    </label>
-                  );
-                })}
+            {spect.map((newspec, i) => {
+              return (
+                <label key={i}>
+                  <p>{Object.keys(newspec)}</p>
+                  <input
+                    type="text"
+                    name={Object.values(newspec)}
+                    defaultValue={Object.values(newspec)}
+                    onChange={updateSpec}
+                  />
+                </label>
+              );
+            })}
             <label>
               <input
                 name="specKey"
@@ -196,11 +179,17 @@ export default function OffCanvas(prop) {
               <p>Категори сонгох</p>
               <select name="chooseCategory" id="selectCategory">
                 {data && <option value={data.category}>{data.category}</option>}
-                <option value="laptop">Laptop</option>
-                <option value="tablet">Tablet</option>
-                <option value="telescop">telescop</option>
-                <option value="laptop">Laptop</option>
-                <option value="laptop">Laptop</option>
+                {fullData.map((e, i) => {
+                  if (!tempCategory.includes(e.category)) {
+                    tempCategory.push(e.category);
+                    return (
+                      <option key={i} value={e.category}>
+                        {e.category}
+                      </option>
+                    );
+                  }
+                  return;
+                })}
               </select>
             </label>
             <label>

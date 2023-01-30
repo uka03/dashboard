@@ -13,9 +13,10 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [data, setdata] = useState();
+  const [refresh, setRefesh] = useState("")
   useEffect(() => {
     axios.get("http://localhost:2020/product").then((res) => setdata(res.data));
-  }, []);
+  }, [refresh]);
   console.log(data);
 
   return (
@@ -29,7 +30,7 @@ function App() {
               <Route path="*" element={<ControlPanel />} />
               <Route
                 path="/dashProducts"
-                element={<DashProducts data={data} />}
+                element={<DashProducts data={data} setRefesh={setRefesh} />}
               />
               <Route path="/order" element={<Order />} />
               <Route path="/users" element={<Users />} />

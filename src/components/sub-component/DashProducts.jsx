@@ -3,15 +3,19 @@ import OffCanvas from "./OffCanvas";
 import { useState } from "react";
 import MenuIcon from "../../icons/Menuicon";
 import axios from "axios";
+
 export default function DashProducts(prop) {
-  const { data } = prop;
+  const { data, setRefesh } = prop;
   const [closeOffCanva, setCloseOffcanva] = useState(false);
   const [product, setProduct] = useState();
+  const [filter, setFilter] = useState("all");
+
+  let tempCategory = [];
+
   function deleteProduct(index) {
     axios
       .delete(`http://localhost:2020/product/${index}`)
-      .then((res) => console.log(res));
-    location.reload();
+      .then((res) => setRefesh(res));
   }
   function editHandler() {
     setCloseOffcanva(true);
@@ -32,14 +36,31 @@ export default function DashProducts(prop) {
               </button>
             </div>
             <div className="filter">
-              <select name="category" id="category">
-                <option value="laptop">Laptop</option>
-                <option value="tablet">Tablet</option>
-                <option value="telescop">telescop</option>
-                <option value="laptop">Laptop</option>
-                <option value="laptop">Laptop</option>
+              <select
+                name="category"
+                id="category"
+                onChange={(e) => setFilter(e.target.value)}
+                defaultValue="all"
+              >
+                <option value="all">all</option>
+                {data.map((e, i) => {
+                  if (!tempCategory.includes(e.category)) {
+                    tempCategory.push(e.category);
+                    return (
+                      <option key={i} value={e.category}>
+                        {e.category}
+                      </option>
+                    );
+                  }
+                })}
               </select>
-              <input type="text" placeholder="search" />
+              <input
+                type="text"
+                placeholder="search"
+                onChange={(e) => {
+                  setFilter(e.target.value);
+                }}
+              />
             </div>
           </div>
           <table className="table">
@@ -58,38 +79,49 @@ export default function DashProducts(prop) {
             </thead>
             <tbody>
               {data.map((product, index) => {
-                return (
-                  <tr key={index}>
-                    <td>
-                      <img src={product.image} alt="" className="productImg" />
-                    </td>
-                    <td>{product.name}</td>
-                    <td>{product.price}</td>
-                    <td>{product.stock}</td>
-                    <td>{product.sale}</td>
-                    <td>{product.category}</td>
-                    <td>
-                      <button className="menuBtn">
-                        <MenuIcon />
-                        <div className="menuBtn-dropDown">
-                          <input
-                            type="button"
-                            value="edit"
-                            onClick={() => {
-                              editHandler(product);
-                              setProduct(product);
-                            }}
-                          />
-                          <input
-                            type="button"
-                            value="delete"
-                            onClick={() => deleteProduct(index)}
-                          />
-                        </div>
-                      </button>
-                    </td>
-                  </tr>
-                );
+                if (
+                  product.category === filter ||
+                  filter === "all" ||
+                  product.category.toLowerCase().includes(filter) ||
+                  product.name.toLowerCase().includes(filter)
+                ) {
+                  return (
+                    <tr key={index}>
+                      <td>
+                        <img
+                          src={product.image}
+                          alt=""
+                          className="productImg"
+                        />
+                      </td>
+                      <td>{product.name}</td>
+                      <td>{product.price}</td>
+                      <td>{product.stock}</td>
+                      <td>{product.sale}</td>
+                      <td>{product.category}</td>
+                      <td>
+                        <button className="menuBtn">
+                          <MenuIcon />
+                          <div className="menuBtn-dropDown">
+                            <input
+                              type="button"
+                              value="edit"
+                              onClick={() => {
+                                editHandler(product);
+                                setProduct(product);
+                              }}
+                            />
+                            <input
+                              type="button"
+                              value="delete"
+                              onClick={() => deleteProduct(index)}
+                            />
+                          </div>
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                }
               })}
             </tbody>
             {closeOffCanva ? (
@@ -97,6 +129,8 @@ export default function DashProducts(prop) {
                 closeOffCanva={setCloseOffcanva}
                 data={product}
                 setProduct={setProduct}
+                fullData={data}
+                setRefesh={setRefesh}
               />
             ) : null}
           </table>
