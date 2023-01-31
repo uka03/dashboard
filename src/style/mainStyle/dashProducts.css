@@ -64,3 +64,32 @@ td {
   border: none;
   border-bottom: 1px solid rgb(174, 174, 174);
 }
+.addProduct_button {
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  background-color: #003282;
+  color: white;
+}
+
+#category {
+  background-color: #003282;
+  color: white;
+  border-radius: none;
+  width: 247px;
+  height: 40px;
+  font-size: 16px;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+#search {
+  width: 340px;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid gray;
+}

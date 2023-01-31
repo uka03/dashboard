@@ -57,6 +57,7 @@ export default function DashProducts(prop) {
               <input
                 type="text"
                 placeholder="search"
+                id="search"
                 onChange={(e) => {
                   setFilter(e.target.value);
                 }}
