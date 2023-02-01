@@ -54,6 +54,15 @@
   border: 1px solid gray;
   border-radius: 5px;
 }
+#address {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  resize: none;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
 .spec-inputs {
   display: flex;
   flex-wrap: wrap;
