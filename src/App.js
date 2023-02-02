@@ -29,7 +29,7 @@ function App() {
       .get("http://localhost:2020/order")
       .then((res) => setOrderData(res.data));
   }, [refresh]);
-  console.log(data);
+
 
   return (
     <div className="App">
@@ -50,6 +50,7 @@ function App() {
                 element={
                   <Users
                     data={userData}
+                    proData={data}
                     orderData={orderData}
                     setRefesh={setRefesh}
                   />

@@ -4,12 +4,12 @@ import CloseIcon from "../../icons/CloseIcon";
 import "../../style/mainStyle/offcanvas.css";
 
 export default function UserCanvas(prop) {
-  const { setCloseUserCanva, data, orderData } = prop;
+  const { setCloseUserCanva, data, orderData, proData } = prop;
   function handlerSubmit(e) {
     e.preventDefault();
 
     axios
-      .put(`http://localhost:2020/product/${data.id}`, proObject)
+      .put(`http://localhost:2020/product/${data.id}`, {})
       .then((res) => setRefesh(res));
 
     setCloseUserCanva(false);
@@ -72,32 +72,14 @@ export default function UserCanvas(prop) {
             <table>
               <tbody>
                 {orderData.map((order, index) => {
-                  if (data.id === order.userId) {
-                    let status;
-                    let color;
-                    console.log(order.status);
-                    if (order.status == true) {
-                      status = "Хүргэгдсэн";
-                      color = "green";
-                    } else {
-                      status = "Хүргэлтэнд гараагүй";
-                      color = "red";
-                    }
-                    return (
-                      <tr key={index}>
-                        <td>
-                          <p>{order.date}</p>
-                        </td>
-                        <td>
-                          <p>{order.orderId}</p>
-                        </td>
-                        <td>
-                          <p style={{ color: color }}>{status}</p>
-                        </td>
-                        <td></td>
-                      </tr>
-                    );
-                  }
+                  return (
+                    <Order
+                      order={order}
+                      index={index}
+                      data={data}
+                      proData={proData}
+                    />
+                  );
                 })}
               </tbody>
             </table>
@@ -114,4 +96,43 @@ export default function UserCanvas(prop) {
       </div>
     </div>
   );
+}
+function Order(prop) {
+  const { order, index, data, proData } = prop;
+  const [orderPro, setOrderPro] = useState([]);
+
+  // orderPro.map((e) => {
+  //   console.log(e);
+  // });
+  if (data.id === order.userId) {
+    let status;
+    let color;
+
+    proData.map((product) => {
+      console.log(order.products.includes(product.id));
+    });
+
+    if (order.status == true) {
+      status = "Хүргэгдсэн";
+      color = "green";
+    } else {
+      status = "Хүргэлтэнд гараагүй";
+      color = "red";
+    }
+
+    return (
+      <tr key={index}>
+        <td>
+          <p>{order.date}</p>
+        </td>
+        <td>
+          <p>{order.orderId}</p>
+        </td>
+        <td>
+          <p style={{ color: color }}>{status}</p>
+        </td>
+        <td></td>
+      </tr>
+    );
+  }
 }

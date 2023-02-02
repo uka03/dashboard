@@ -6,13 +6,10 @@ import axios from "axios";
 import UserCanvas from "./UserCanvas";
 
 export default function Users(prop) {
-  const { data, setRefesh, orderData } = prop;
+  const { data, setRefesh, orderData, proData } = prop;
   const [closeuserCanva, setCloseUserCanva] = useState(false);
   const [user, setUser] = useState();
   const [filter, setFilter] = useState("all");
-  console.log(data);
-
-  let tempCategory = [];
 
   function deleteProduct(index) {
     axios
@@ -28,24 +25,6 @@ export default function Users(prop) {
         <div className="DashProducts">
           <div className="products-header">
             <div className="filter">
-              <select
-                name="category"
-                id="category"
-                onChange={(e) => setFilter(e.target.value)}
-                defaultValue="all"
-              >
-                <option value="all">all</option>
-                {data.map((e, i) => {
-                  if (!tempCategory.includes(e.category)) {
-                    tempCategory.push(e.category);
-                    return (
-                      <option key={i} value={e.category}>
-                        {e.category}
-                      </option>
-                    );
-                  }
-                })}
-              </select>
               <input
                 type="text"
                 placeholder="search"
@@ -115,6 +94,7 @@ export default function Users(prop) {
               <UserCanvas
                 setCloseUserCanva={setCloseUserCanva}
                 data={user}
+                proData={proData}
                 orderData={orderData}
               />
             ) : null}
