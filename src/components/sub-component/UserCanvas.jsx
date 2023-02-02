@@ -4,35 +4,13 @@ import CloseIcon from "../../icons/CloseIcon";
 import "../../style/mainStyle/offcanvas.css";
 
 export default function UserCanvas(prop) {
-  const { setCloseUserCanva, data } = prop;
+  const { setCloseUserCanva, data, orderData } = prop;
   function handlerSubmit(e) {
     e.preventDefault();
-    let name = e.target.name.value;
-    let price = e.target.price.value;
-    let stock = e.target.stock.value;
-    let sale = e.target.sale.value;
-    let category = e.target.chooseCategory.value;
-    let brand = e.target.chooseBrand.value;
-    let image = data ? data.image : null;
-    let id = data ? data.id : null;
-    let proObject = {
-      name,
-      image,
-      price,
-      stock,
-      sale,
-      category,
-      brand,
-      spec,
-      id,
-    };
-
-    console.log(proObject);
 
     axios
       .put(`http://localhost:2020/product/${data.id}`, proObject)
       .then((res) => setRefesh(res));
-    console.log(proObject);
 
     setCloseUserCanva(false);
   }
@@ -78,11 +56,57 @@ export default function UserCanvas(prop) {
           </div>
           <label>
             <p>Хаяг</p>
-            <textarea name="address" id="address" cols="30" rows="10">
-              {data.address}
-            </textarea>
+            <textarea
+              name="address"
+              id="address"
+              cols="10"
+              rows="5"
+              defaultValue={data.address}
+            ></textarea>
           </label>
+          <div className="userCanva-order">
+            <div className="userCanva-order-title">
+              <p>Захиалгын түүх</p>
+              <p>{"(0)"}</p>
+            </div>
+            <table>
+              <tbody>
+                {orderData.map((order, index) => {
+                  if (data.id === order.userId) {
+                    let status;
+                    let color;
+                    console.log(order.status);
+                    if (order.status == true) {
+                      status = "Хүргэгдсэн";
+                      color = "green";
+                    } else {
+                      status = "Хүргэлтэнд гараагүй";
+                      color = "red";
+                    }
+                    return (
+                      <tr key={index}>
+                        <td>
+                          <p>{order.date}</p>
+                        </td>
+                        <td>
+                          <p>{order.orderId}</p>
+                        </td>
+                        <td>
+                          <p style={{ color: color }}>{status}</p>
+                        </td>
+                        <td></td>
+                      </tr>
+                    );
+                  }
+                })}
+              </tbody>
+            </table>
+          </div>
 
+          <label>
+            <p>Password</p>
+            <input type="password" />
+          </label>
           <button className="saveBtn" type="submit">
             Хадгалах
           </button>

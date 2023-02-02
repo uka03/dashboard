@@ -6,7 +6,7 @@ import axios from "axios";
 import UserCanvas from "./UserCanvas";
 
 export default function Users(prop) {
-  const { data, setRefesh } = prop;
+  const { data, setRefesh, orderData } = prop;
   const [closeuserCanva, setCloseUserCanva] = useState(false);
   const [user, setUser] = useState();
   const [filter, setFilter] = useState("all");
@@ -112,7 +112,11 @@ export default function Users(prop) {
               })}
             </tbody>
             {closeuserCanva ? (
-              <UserCanvas setCloseUserCanva={setCloseUserCanva} data={user} />
+              <UserCanvas
+                setCloseUserCanva={setCloseUserCanva}
+                data={user}
+                orderData={orderData}
+              />
             ) : null}
           </table>
         </div>
