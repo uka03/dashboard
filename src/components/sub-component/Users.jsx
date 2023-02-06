@@ -11,9 +11,9 @@ export default function Users(prop) {
   const [user, setUser] = useState();
   const [filter, setFilter] = useState("all");
 
-  function deleteProduct(index) {
+  function deleteUser(id) {
     axios
-      .delete(`http://localhost:2020/product/${index}`)
+      .delete(`http://localhost:2020/users/${id}`)
       .then((res) => setRefesh(res));
   }
   function editHandler() {
@@ -80,7 +80,7 @@ export default function Users(prop) {
                             <input
                               type="button"
                               value="delete"
-                              onClick={() => deleteProduct(index)}
+                              onClick={() => deleteUser(user.id)}
                             />
                           </div>
                         </button>
