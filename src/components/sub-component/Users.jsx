@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "../../style/mainStyle/dashProducts.css";
 
 import MenuIcon from "../../icons/Menuicon";
 import axios from "axios";
 import UserCanvas from "./UserCanvas";
+import { DataContext } from "../../App";
 
-export default function Users(prop) {
-  const { data, setRefesh, orderData, proData } = prop;
+export default function Users() {
+  const { data, userData, orderData, setRefesh } = useContext(DataContext);
+
   const [closeuserCanva, setCloseUserCanva] = useState(false);
   const [user, setUser] = useState();
   const [filter, setFilter] = useState("all");
@@ -21,7 +23,7 @@ export default function Users(prop) {
   }
   return (
     <>
-      {data && (
+      {userData && (
         <div className="DashProducts">
           <div className="products-header">
             <div className="filter">
@@ -50,7 +52,7 @@ export default function Users(prop) {
               </tr>
             </thead>
             <tbody>
-              {data.map((user, index) => {
+              {userData.map((user, index) => {
                 if (
                   user.category === filter ||
                   filter === "all" ||
@@ -93,9 +95,7 @@ export default function Users(prop) {
             {closeuserCanva ? (
               <UserCanvas
                 setCloseUserCanva={setCloseUserCanva}
-                data={user}
-                proData={proData}
-                orderData={orderData}
+                userData={user}
               />
             ) : null}
           </table>

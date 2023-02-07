@@ -1,20 +1,22 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { DataContext } from "../../App";
 import CloseIcon from "../../icons/CloseIcon";
 import "../../style/mainStyle/offcanvas.css";
 
 export default function UserCanvas(prop) {
-  const { setCloseUserCanva, data, orderData, proData } = prop;
+  const { data, orderData } = useContext(DataContext);
+  const { setCloseUserCanva, userData } = prop;
 
   function handlerSubmit(e) {
     e.preventDefault();
-    let id = data.id;
+    let id = userData.id;
     let email = e.target.email.value;
     let first_name = e.target.lastName.value;
     let last_name = e.target.firstName.value;
     let password = e.target.password.value;
     let phone_number = e.target.phoneNumber.value;
-    let date = data.date;
+    let date = userData.date;
     let address = e.target.address.value;
     let userObject = {
       id,
@@ -28,7 +30,7 @@ export default function UserCanvas(prop) {
     };
 
     axios
-      .put(`http://localhost:2020/user/${data.id}`, userObject)
+      .put(`http://localhost:2020/user/${userData.id}`, userObject)
       .then((res) => console.log(res));
 
     setCloseUserCanva(false);
@@ -57,7 +59,7 @@ export default function UserCanvas(prop) {
               <input
                 type="text"
                 name="lastName"
-                defaultValue={data.first_name}
+                defaultValue={userData.first_name}
               />
             </label>
             <label>
@@ -65,7 +67,7 @@ export default function UserCanvas(prop) {
               <input
                 type="text"
                 name="firstName"
-                defaultValue={data.last_name}
+                defaultValue={userData.last_name}
               />
             </label>
             <label>
@@ -73,12 +75,12 @@ export default function UserCanvas(prop) {
               <input
                 type="number"
                 name="phoneNumber"
-                defaultValue={data.phone_number}
+                defaultValue={userData.phone_number}
               />
             </label>
             <label>
               <p>И-Мэйл хаяг</p>
-              <input type="text" name="email" defaultValue={data.email} />
+              <input type="text" name="email" defaultValue={userData.email} />
             </label>
           </div>
           <label>
@@ -88,7 +90,7 @@ export default function UserCanvas(prop) {
               id="address"
               cols="10"
               rows="5"
-              defaultValue={data.address}
+              defaultValue={userData.address}
             ></textarea>
           </label>
           <div className="userCanva-order">
@@ -99,15 +101,8 @@ export default function UserCanvas(prop) {
             <table>
               <tbody>
                 {orderData.map((order, index) => {
-                  if (data.id === order.userId) {
-                    return (
-                      <Order
-                        order={order}
-                        index={index}
-                        data={data}
-                        proData={proData}
-                      />
-                    );
+                  if (userData.id == order.userId) {
+                    return <Order order={order} index={index} data={data} />;
                   }
                 })}
               </tbody>
@@ -119,7 +114,7 @@ export default function UserCanvas(prop) {
             <input
               type={"password"}
               name="password"
-              defaultValue={data.password}
+              defaultValue={userData.password}
             />
             <span>show</span>
           </label>
@@ -133,14 +128,14 @@ export default function UserCanvas(prop) {
 }
 
 function Order(prop) {
-  const { order, index, proData } = prop;
+  const { order, index, data } = prop;
   const [orderPro, setOrderPro] = useState([]);
   let totalPrice = 0;
 
   let status;
   let color;
 
-  proData.map((product) => {
+  data.map((product) => {
     order.products.map((orderId) => {
       if (product.id == orderId) {
         orderPro.push(product);
@@ -151,7 +146,7 @@ function Order(prop) {
   orderPro.map((product) => {
     totalPrice = totalPrice + Number(product.price);
   });
-  console.log(totalPrice);
+
   if (order.status == true) {
     status = "Хүргэгдсэн";
     color = "green";

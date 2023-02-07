@@ -1,11 +1,12 @@
 import "../../style/mainStyle/dashProducts.css";
 import OffCanvas from "./OffCanvas";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import MenuIcon from "../../icons/Menuicon";
 import axios from "axios";
+import { DataContext } from "../../App";
 
-export default function DashProducts(prop) {
-  const { data, setRefesh } = prop;
+export default function DashProducts() {
+  const { data, setRefesh } = useContext(DataContext);
   const [closeOffCanva, setCloseOffcanva] = useState(false);
   const [product, setProduct] = useState();
   const [filter, setFilter] = useState("all");

@@ -9,7 +9,9 @@ import Settings from "./components/sub-component/Settings";
 import DashHeader from "./components/Dashheader";
 import DashSide from "./components/DashSide";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+
+export const DataContext = createContext()
 
 function App() {
   const [data, setdata] = useState();
@@ -32,37 +34,38 @@ function App() {
 
 
   return (
-    <div className="App">
-      <div className="dashboard">
-        <DashHeader />
-        <div className="container dashMain">
-          <DashSide />
-          <div className="dashContent">
-            <Routes>
-              <Route path="*" element={<ControlPanel />} />
-              <Route
-                path="/dashProducts"
-                element={<DashProducts data={data} setRefesh={setRefesh} />}
-              />
-              <Route path="/order" element={<Order />} />
-              <Route
-                path="/users"
-                element={
-                  <Users
-                    data={userData}
-                    proData={data}
-                    orderData={orderData}
-                    setRefesh={setRefesh}
-                  />
-                }
-              />
-              <Route path="/moderator" element={<Moderator />} />
-              <Route path="/settigns" element={<Settings />} />
-            </Routes>
+    <DataContext.Provider value={{ data, userData, orderData, setRefesh }}>
+      <div className="App">
+        <div className="dashboard">
+          <DashHeader />
+          <div className="container dashMain">
+            <DashSide />
+            <div className="dashContent">
+              <Routes>
+                <Route path="*" element={<ControlPanel />} />
+                <Route
+                  path="/dashProducts"
+                  element={<DashProducts />}
+                />
+                <Route path="/order" element={<Order />} />
+                <Route
+                  path="/users"
+                  element={
+                    <Users
+
+                    />
+                  }
+                />
+                <Route path="/moderator" element={<Moderator />} />
+                <Route path="/settigns" element={<Settings />} />
+              </Routes>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+    </DataContext.Provider>
+
   );
 }
 
