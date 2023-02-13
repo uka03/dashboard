@@ -14,6 +14,8 @@
   height: 100%;
   background-color: white;
   overflow-y: scroll;
+  transition-delay: 3s;
+  transition: all 5s;
 }
 
 .offcanvas-content-header {
