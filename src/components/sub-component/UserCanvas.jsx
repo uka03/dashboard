@@ -102,7 +102,11 @@ export default function UserCanvas(prop) {
               <tbody>
                 {orderData.map((order, index) => {
                   if (userData.id == order.userId) {
-                    return <Order order={order} index={index} data={data} />;
+                    return (
+                      <tr className="" key={index}>
+                        <Order order={order} index={index} data={data} />
+                      </tr>
+                    );
                   }
                 })}
               </tbody>
@@ -156,7 +160,8 @@ function Order(prop) {
   }
 
   return (
-    <tr key={index}>
+    <>
+      {" "}
       <td>
         <p>{order.date}</p>
       </td>
@@ -169,6 +174,6 @@ function Order(prop) {
       <td>
         <p>${totalPrice}</p>
       </td>
-    </tr>
+    </>
   );
 }
