@@ -132,24 +132,11 @@ export default function UserCanvas(prop) {
 }
 
 function Order(prop) {
-  const { order, index, data } = prop;
-  const [orderPro, setOrderPro] = useState([]);
+  const { order, index } = prop;
   let totalPrice = 0;
 
   let status;
   let color;
-
-  data.map((product) => {
-    order.products.map((orderId) => {
-      if (product.id == orderId) {
-        orderPro.push(product);
-      }
-    });
-  });
-
-  orderPro.map((product) => {
-    totalPrice = totalPrice + Number(product.price);
-  });
 
   if (order.status == true) {
     status = "Хүргэгдсэн";
@@ -172,7 +159,7 @@ function Order(prop) {
         <p style={{ color: color }}>{status}</p>
       </td>
       <td>
-        <p>${totalPrice}</p>
+        <p>${order.totalPrice}</p>
       </td>
     </>
   );

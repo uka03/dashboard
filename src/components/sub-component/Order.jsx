@@ -28,16 +28,10 @@ export default function Order() {
                 let user;
                 user =
                   userData && userData.find((user) => user.id == order.userId);
-
-                let totalPrice = 0;
-                data &&
-                  data.map((product) => {
-                    order.products.map((orderPro) => {
-                      if (orderPro === product.id) {
-                        totalPrice = totalPrice + product.price;
-                      }
-                    });
-                  });
+                let orderCount = 0;
+                order.products.map(
+                  (orderPro) => (orderCount = orderCount + orderPro.stock)
+                );
                 let orderStatus;
                 if (order.status) {
                   orderStatus = "хүргэгдсэн";
@@ -53,8 +47,8 @@ export default function Order() {
                       <td>{user.phone_number}</td>
                       <td>{user.email}</td>
                       <td>{user.address.slice(0, 10)}...</td>
-                      <td>{order.products.length}</td>
-                      <td>{totalPrice}</td>
+                      <td>{orderCount}</td>
+                      <td>{order.totalPrice}</td>
                       <td>{order.pay}</td>
                       <td>{orderStatus}</td>
                       <td></td>
