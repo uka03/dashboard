@@ -15,7 +15,7 @@ export default function DashProducts() {
 
   function deleteProduct(index) {
     axios
-      .delete(`http://localhost:2020/product/${index}`)
+      .delete(`http://localhost:3030/product/${index}`)
       .then((res) => setRefesh(res));
   }
   function editHandler() {
@@ -116,7 +116,7 @@ export default function DashProducts() {
                             <input
                               type="button"
                               value="delete"
-                              onClick={() => deleteProduct(index)}
+                              onClick={() => deleteProduct(product._id)}
                             />
                           </div>
                         </button>

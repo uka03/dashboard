@@ -136,3 +136,21 @@
   border-radius: 20px;
   font-size: 20px;
 }
+
+.imageUpload {
+  display: flex;
+  width: 550px;
+  margin: 0 auto;
+
+  flex-wrap: wrap;
+}
+
+.imageUpload input {
+  border: 1px solid black;
+  width: 200px;
+  height: 200px;
+  margin: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

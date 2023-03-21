@@ -19,7 +19,7 @@ function App() {
   const [orderData, setOrderData] = useState();
   const [refresh, setRefesh] = useState("");
   useEffect(() => {
-    axios.get("http://localhost:2020/product").then((res) => setdata(res.data));
+    axios.get("http://localhost:3030/product").then((res) => setdata(res.data));
   }, [refresh]);
   useEffect(() => {
     axios

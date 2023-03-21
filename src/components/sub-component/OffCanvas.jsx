@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CloseIcon from "../../icons/CloseIcon";
 import "../../style/mainStyle/offcanvas.css";
 
@@ -8,6 +8,8 @@ export default function OffCanvas(prop) {
   let [spect, setspec] = useState([]);
   const [addSpecKey, setAddSpecKey] = useState();
   const [addSpecVal, setAddSpecVal] = useState();
+
+  const imageRef = useRef();
 
   let tempCategory = [];
   useEffect(() => {
@@ -41,6 +43,16 @@ export default function OffCanvas(prop) {
     console.log(spect);
   }
 
+  function uploadHandler(e) {
+    let image = new FormData();
+    image.append("image", e.target.files[0]);
+    console.log(image);
+
+    axios
+      .post("http://localhost:3030/image", image)
+      .then((data) => (imageRef.current = data.data));
+  }
+
   function handlerSubmit(e) {
     e.preventDefault();
     let name = e.target.name.value;
@@ -49,12 +61,13 @@ export default function OffCanvas(prop) {
     let sale = e.target.sale.value;
     let category = e.target.chooseCategory.value;
     let brand = e.target.chooseBrand.value;
-    let image = data ? data.image : null;
     let id = data ? data.id : null;
     let spec = spect;
+    let image = imageRef.current ? imageRef.current : data.image;
+
     let proObject = {
-      name,
       image,
+      name,
       price,
       stock,
       sale,
@@ -65,19 +78,22 @@ export default function OffCanvas(prop) {
     };
 
     console.log(proObject);
+    console.log(data ? true : false);
     if (data) {
-      axios
-        .put(`http://localhost:2020/product/${data.id}`, proObject)
-        .then((res) => setRefesh(res));
-      console.log(proObject);
+      fetch(`http://localhost:3030/product/${data._id}`, {
+        method: "put",
+        body: proObject,
+      });
+      console.log(proObject, "this put after");
     } else {
       axios
-        .post("http://localhost:2020/product", proObject)
+        .post("http://localhost:3030/product", proObject)
         .then((res) => setRefesh(res));
       console.log(proObject);
     }
     closeOffCanva(false);
     setProduct(undefined);
+    imageRef.current = undefined;
   }
 
   return (
@@ -98,6 +114,9 @@ export default function OffCanvas(prop) {
           onSubmit={handlerSubmit}
           id="addedProduct"
         >
+          <div className="imageUpload ">
+            <input type="file" name="image" onChange={uploadHandler} />
+          </div>
           <div className="offcanvas-main-inputs">
             <label>
               <p> Барааны нэр </p>
