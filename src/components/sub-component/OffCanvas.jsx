@@ -80,11 +80,9 @@ export default function OffCanvas(prop) {
     console.log(proObject);
     console.log(data ? true : false);
     if (data) {
-      fetch(`http://localhost:3030/product/${data._id}`, {
-        method: "put",
-        body: proObject,
-      });
-      console.log(proObject, "this put after");
+      axios
+        .put(`http://localhost:3030/product/${data._id}`, proObject)
+        .then((res) => setRefesh(res));
     } else {
       axios
         .post("http://localhost:3030/product", proObject)
