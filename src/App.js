@@ -23,12 +23,12 @@ function App() {
   }, [refresh]);
   useEffect(() => {
     axios
-      .get("http://localhost:2020/users")
+      .get("http://localhost:3030/user")
       .then((res) => setUserData(res.data));
   }, [refresh]);
   useEffect(() => {
     axios
-      .get("http://localhost:2020/order")
+      .get("http://localhost:3030/order")
       .then((res) => setOrderData(res.data));
   }, [refresh]);
 

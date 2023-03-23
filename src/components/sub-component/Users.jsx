@@ -15,7 +15,7 @@ export default function Users() {
 
   function deleteUser(id) {
     axios
-      .delete(`http://localhost:2020/users/${id}`)
+      .delete(`http://localhost:3030/user/${id}`)
       .then((res) => setRefesh(res));
   }
   function editHandler() {
@@ -82,7 +82,9 @@ export default function Users() {
                             <input
                               type="button"
                               value="delete"
-                              onClick={() => deleteUser(user.id)}
+                              onClick={() => {
+                                deleteUser(user._id);
+                              }}
                             />
                           </div>
                         </button>
